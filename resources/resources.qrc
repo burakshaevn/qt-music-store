@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/">
+        <file>add.svg</file>
+        <file>delete.svg</file>
+        <file>edit.svg</file>
+        <file>more_horiz.svg</file>
+        <file>navigate_before.svg</file>
+        <file>navigate_next.svg</file>
+        <file>person.svg</file>
+        <file>search.svg</file>
+        <file>Shopping cart.svg</file>
+        <file>Sort Vertical 01.svg</file>
+        <file>bookmark.svg</file>
+        <file>bookmark_filled.svg</file>
+        <file>check.svg</file>
+    </qresource>
+</RCC>
