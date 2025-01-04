@@ -13,5 +13,6 @@
         <file>bookmark.svg</file>
         <file>bookmark_filled.svg</file>
         <file>check.svg</file>
+        <file>Music.svg</file>
     </qresource>
 </RCC>
