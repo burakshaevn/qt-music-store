@@ -49,7 +49,7 @@
 
 ## Пример  
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/5aa42531-b2d1-4f4d-9f79-ba6c5f3bdb0f" alt="image" width = "70%">
+  <img src="https://github.com/user-attachments/assets/67ac5082-15e1-49f1-b2e7-cf5cd1834e7b" alt="image" width = "70%">
   <p>Рис. 1 — Главный экран.</p>
 </div> 
 
