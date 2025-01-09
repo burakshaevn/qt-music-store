@@ -75,10 +75,8 @@ public:
         return user_.instruments_;
     }
 
-protected:
+private:
     UserInfo user_;
-
-signals:
 };
 
 #endif // USER_H

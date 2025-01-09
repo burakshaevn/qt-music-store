@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef INSTRUMENTS_H
 #define INSTRUMENTS_H
 
@@ -5,8 +7,19 @@
 #include <QList>
 #include <QRegularExpression>
 #include <QHash>
+#include <QDir>
+#include <QLabel>
+#include <QPixmap>
+#include <QCoreApplication>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QMainWindow>
 
 #include <unordered_map>
+
+class DatabaseHandler;
+class ProductCard;
+class Cart;
 
 struct InstrumentInfo
 {
@@ -19,12 +32,12 @@ struct InstrumentInfo
         , description_(description)
         , image_path_(image_path)
     {}
-    int id_;
-    QString name_;
-    int type_id_;
-    int price_;
-    QString description_;
-    QString image_path_;
+    int id_ = 0;
+    QString name_ = "";
+    int type_id_ = 0;
+    int price_ = 0;
+    QString description_ = "";
+    QString image_path_ = "";
 };
 
 struct InstrumentsHasher {
@@ -33,94 +46,42 @@ struct InstrumentsHasher {
     }
 };
 
-class Instruments
+class Instruments : public QObject
 {
 public:
     using Container = std::unordered_map<QString, InstrumentInfo, InstrumentsHasher>;
 
-    Instruments() = default;
+    explicit Instruments(std::shared_ptr<ProductCard> product_card,
+                         std::shared_ptr<Cart> cart,
+                         std::shared_ptr<DatabaseHandler> db_manager);
 
-    inline void PushInstrument(const InstrumentInfo& instrument) {
-        instruments_[instrument.name_] = instrument;
-    }
+    void PushInstrument(const InstrumentInfo& instrument);
 
-    inline void Clear() {
-        instruments_.clear();
-    }
+    void Clear();
 
-    inline Container GetInstruments() const {
-        return instruments_;
-    }
+    Container GetInstruments() const;
 
-    inline const InstrumentInfo* FindInstrument(const QString& instrument_name) const {
-        auto iter = instruments_.find(instrument_name);
-        if (iter != instruments_.end()) {
-            return &iter->second;
-        }
-        else {
-            return nullptr;
-        }
-    }
+    const InstrumentInfo* FindInstrument(const QString& instrument_name) const;
 
-    QList<InstrumentInfo> FindRelevantInstruments(const QString& term) const {
-        // Хранилище для всех инструментов и их релевантности
-        QList<std::pair<InstrumentInfo, double>> scores;
+    QList<InstrumentInfo> FindRelevantInstruments(const QString& term) const;
 
-        // Вычисляем TF-IDF для каждого инструмента
-        for (const auto& [name, info] : instruments_) {
-            double tf_idf = ComputeTfIdf(info.name_, term);
-            scores.append({info, tf_idf});
-        }
-
-        // Сортируем результаты по убыванию TF-IDF
-        std::sort(scores.begin(), scores.end(), [](const auto& a, const auto& b) {
-            return a.second > b.second; // Сортировка по убыванию релевантности
-        });
-
-        // Создаем результирующий список инструментов
-        QList<InstrumentInfo> result;
-        for (const auto& pair : scores) {
-            if (pair.second > 0.0) { // Добавляем только инструменты с релевантностью > 0
-                result.append(pair.first);
-            }
-        }
-        return result;
-    }
+    // Кэширование инструментов из базы данных.
+    // Загружаем данные об инструментах в instruments_ как в основное хранилище
+    void PullInstruments();
 
 private:
     Container instruments_; // <Instrument Name, InstrumentInfo>
+    
+    std::shared_ptr<DatabaseHandler> db_manager_;
+    std::weak_ptr<ProductCard> product_card_;
+    std::shared_ptr<Cart> cart_;
 
-    double ComputeTfIdf(const QString& document, const QString& term) const {
-        // Подсчет частоты термина (TF — Term Frequency)
-        int term_frequency = CountOccurrences(document, term);
-        int total_terms = CountTotalWords(document);
-        double tf = total_terms > 0 ? static_cast<double>(term_frequency) / total_terms : 0.0;
+    inline double ComputeTfIdf(const QString& document, const QString& term) const;
 
-        // Подсчет обратной частотности (IDF — Inverse Document Frequency)
-        int idf = 1.0;
+    inline int CountOccurrences(const QString& document, const QString& term) const;
 
-        // Итоговое значение TF-IDF
-        return tf * idf;
-    }
-
-    int CountOccurrences(const QString& document, const QString& term) const {
-        int count = 0;
-        QRegularExpression regex("\\b" + QRegularExpression::escape(term) + "\\b", QRegularExpression::CaseInsensitiveOption);
-        QRegularExpressionMatchIterator it = regex.globalMatch(document);
-        while (it.hasNext()) {
-            it.next();
-            ++count;
-        }
-        return count;
-    }
-
-    /**
-     * Подсчет общего количества слов в документе.
-     */
-    int CountTotalWords(const QString& document) const {
-        QRegularExpression wordRegex("\\s+"); // Используем регулярное выражение для разделения по пробелам
-        return document.split(wordRegex, Qt::SkipEmptyParts).size();
-    }
+    // Подсчет общего количества слов в документе.
+    int CountTotalWords(const QString& document) const;
 };
 
 #endif // INSTRUMENTS_H

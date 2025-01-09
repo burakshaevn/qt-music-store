@@ -1,7 +1,8 @@
 #include "table.h"
 
-Table::Table(DatabaseManager* db_manager, const User* user, QWidget* parent)
+Table::Table(std::shared_ptr<DatabaseHandler> db_manager, const User* user, QWidget* parent)
     : QWidget(parent)
+    , db_manager_(std::move(db_manager))
     , data_table_(new QTableView(this))
     , description_table(new QLabel(this))
 {}

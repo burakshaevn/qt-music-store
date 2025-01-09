@@ -14,12 +14,14 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Widgets Sql)
 
 add_library(backend
 
-  database_manager.h database_manager.cpp
+  database_handler.h database_handler.cpp
   user.h
   table.h table.cpp
   domain.h
   edit_dialog.h edit_dialog.cpp
-  instruments.h
+  instruments.h instruments.cpp
+  product_card.h product_card.cpp
+  cart.h cart.cpp
 
 )
 target_link_libraries(backend Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Sql)

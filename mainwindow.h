@@ -14,11 +14,12 @@
 #include <QProgressDialog>
 #include <QThread>
 
-#include "database_manager.h"
+#include "database_handler.h"
+#include "product_card.h"
+#include "cart.h"
 #include "user.h"
 #include "table.h"
 #include "instruments.h"
-#include <unordered_set>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -48,13 +49,21 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
-    // QMap<QString, QWidget*> instruments_cards_;
-    std::unordered_map<QString, QWidget*> instruments_cards_;
-    std::unique_ptr<QWidget> card_container_;
-    std::unique_ptr<QVBoxLayout> layout_;
+    // Управление базой данных
+    std::shared_ptr<DatabaseHandler> db_manager_;
 
-    DatabaseManager db_manager_;
-    std::unique_ptr<Instruments> instruments_;
+    // Управляет информацией о каждом инструменте
+    std::shared_ptr<Instruments> instruments_;
+
+    // Управляет карточками товаров
+    std::shared_ptr<ProductCard> product_card_;
+
+    // Управляет корзиной.
+    // Корзина хранится в статической памяти. Это значит, что после повторного запуска приложения
+    // текущая корзина пользователя будет очищена.
+    // Сама хэш-таблица хранит пару ключ-значение, в виде <название товара (QString), карточка (QWidget*)>
+    std::shared_ptr<Cart> cart_;
+
     std::unique_ptr<User> user_;
     std::unique_ptr<Table> table_;
     std::unique_ptr<QWidget> floating_menu_; // Плавающее меню
@@ -63,18 +72,7 @@ private:
     std::unique_ptr<QWidget> side_widget_;
     QListWidget* side_list_;
 
-    // Корзина. Все инструменты, занесённые в корзину, можно впоследствие оплатить.
-    // Корзина хранится в автоматической памяти.
-    // Это значит, что после повторного запуска приложения текущая корзина пользователя будет очищена.
-    // Сама хэш-таблица хранит «название товара, карточка» (указатель на класс QWidget)
-    std::unordered_map<QString, QWidget*> cart_;
-    int total_cost_ = 0;
-
-    std::unordered_set<QString> hidden_to_cart_buttons_;
-    void RestoreHiddenToCartButtons();
-
-    void UpdateInstrumentsWidget(const QString& filter);
-    void CreateInstrumentCart();
+    void BuildDependencies();
 
     // Обработка нажатий на кнопки "Ещё", "Профиль" и "Корзина" из плавающего меню
     void MoreClicked();
@@ -90,24 +88,6 @@ private:
 
     // Создать содержимое и настроить расположение для левого бокового меню
     void SetupSideMenu();
-
-    void DrawItem(const InstrumentInfo& instrument);
-    void DrawRelevantInstruments(const QString& term);
-
-    void EnsureContainerInScrollArea(QScrollArea* targetScrollArea);
-
-    // Спрятать старые карточки товаров.
-    // Сначала все старые прячем, чтобы потом под определённые фильтры отобразить только нужные.
-    // Они не удаляются, а просто скрываются, благодаря методу ->hide(),
-    // потому что быстрее вызвать метод ->show() для необходимых карточек, чем собрать и отрисовать их по новой
-    void HideOldCards();
-
-    // Отформатировать число в формате 100000000 → 100 000 000
-    QString FormatPrice(int price);
-
-    // Кэширование инструментов из базы данных.
-    // Загружаем в instruments_ как в основное хранилище
-    void PullInstruments();
 
     // Получить список названий купленных товаров
     QList<QString> GetPurchasedInstruments(int user_id) const;

@@ -64,4 +64,14 @@ inline Role StringToRole(const QString& role) {
     }
 }
 
+// Отформатировать число и вернуть строку. Пример: 100000000 → "100 000 000"
+inline QString FormatPrice(int price) {
+    QString formattedPrice = QString::number(price);
+    int len = formattedPrice.length();
+    for (int i = len - 3; i > 0; i -= 3) {
+        formattedPrice.insert(i, ' ');
+    }
+    return formattedPrice;
+}
+
 #endif // DOMAIN_H
