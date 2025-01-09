@@ -114,7 +114,7 @@
 ### Поиск
 После нажатия на кнопку поиска, выходит окно с полем для ввода. 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/7c89fc61-e8c1-4201-9d9c-0ff8372b2638" alt="GIF Image" width="30%">
+  <img src="https://github.com/user-attachments/assets/7c89fc61-e8c1-4201-9d9c-0ff8372b2638" alt="GIF Image">
   <p>Рис. 6 — Ожидание поискового запроса.</p>
 </div> 
 
@@ -126,13 +126,13 @@
 
 После выполнения поиска (кнопка «ОК») выполняется ранжирование наиболее релевантных запросов в кэше с помощью алгоритма TF-IDF: он оценивает важность слова в документе относительно всего корпуса текстов, основываясь на частоте термина в документе и его редкости в общем наборе документов. 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/9dce4383-021a-4c45-aa06-518399775e51" alt="GIF Image" width="30%">
+  <img src="https://github.com/user-attachments/assets/9dce4383-021a-4c45-aa06-518399775e51" alt="GIF Image">
   <p>Рис. 7 — Уведомление о результатах поиска.</p>
 </div> 
 
 Отображение результатов поиска.
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/8378f18a-ebff-4369-8392-98488fb225e4" alt="GIF Image" width="70%">
+  <img src="https://github.com/user-attachments/assets/8378f18a-ebff-4369-8392-98488fb225e4" alt="GIF Image" width = "70%">
   <p>Рис. 8 — Вывод результатов поиска.</p>
 </div> 
 
@@ -194,7 +194,7 @@ INSERT INTO public.purchases(id, client_id, instrument_id) VALUES (%1, %2, %3);
 
 Здесь нельзя задать значение поля id. Потому что это «счётчик» записей в таблице, который будет сам автоматически увеличиваться по мере поступления новых записей.
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/ce6f503a-9ce2-475b-a345-abce94b22846" alt="image">
+  <img src="https://github.com/user-attachments/assets/99fa8964-ae2c-4afa-b854-ef86a75a7506" alt="image">
   <p>Рис. 13 — Окно для добавления.</p>
 </div>
 
@@ -203,32 +203,32 @@ INSERT INTO public.purchases(id, client_id, instrument_id) VALUES (%1, %2, %3);
 
 В некоторых таблицах, например, ID начинается необязательно с 1. Итерироваться в этом окне мы можем от самого минимального ID до самого максимального. Чтобы не выходить за пределы.
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/93fefce8-ee9c-40b0-a120-2a9f731b8ea1" alt="image">
+  <img src="https://github.com/user-attachments/assets/ea9cfb6a-0ab8-4f15-a25f-dcd3543fb627" alt="image">
   <p>Рис. 14 — Окно ввода ID записи (автоинкрементируемого столбца) в текущей таблице.</p>
 </div>
 
 После указания ID удаляемой записи выходит окно подтверждения удаления, где строится таблица с удаляемой строкой (чтобы быть уверенным, что удаляется именно то, что мы задумали).
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/39c3bbce-84ff-4ba9-b20f-dcee17e80708" alt="image">
+  <img src="https://github.com/user-attachments/assets/ca9aa27c-eaf9-4f1a-bfbe-325f200deb52" alt="image">
   <p>Рис. 15 — Вывод удаляемой строки.</p>
 </div>
 
 После подтверждения происходит удаление из основной таблицы, **а записи, которые ссылались на первичный ключ этой строки, каскадно удаляются**.
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/afc0ea81-7648-4562-bcf3-43e3f9d9248b" alt="image">
+  <img src="https://github.com/user-attachments/assets/6a2f0e82-9ee6-45f0-84bb-a17c302c5835" alt="image">
   <p>Рис. 16 — Окно подтверждения удаления.</p>
 </div>
 
 ## Редактирование записи
 Для редактирования указывается всегда номер строки в таблицы, а не ID записи. 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/d7c0b9b5-9a02-4260-aff5-85586e22d4ac" alt="image">
+  <img src="https://github.com/user-attachments/assets/0bd0d248-54ce-4bb0-b2e4-b166a7e5fbe3" alt="image">
   <p>Рис. 17 — Окно поиска записи в таблице.</p>
 </div>
 
 Здесь редактирование порядкового номера записи (id) также недоступно.
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/08848999-eab6-4a4e-bbb5-b9fc026870e1" alt="image">
+  <img src="https://github.com/user-attachments/assets/04cba3de-bf20-44a3-8ab7-13dac0666ff6" alt="image">
   <p>Рис. 18 — Окно редактирования записи.</p>
 </div>
 
