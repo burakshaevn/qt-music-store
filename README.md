@@ -51,7 +51,7 @@
 
 ## Пример  
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/67ac5082-15e1-49f1-b2e7-cf5cd1834e7b" alt="image" width = "70%">
+  <img src="https://github.com/user-attachments/assets/669a54cc-4896-43c4-9182-e254491da1b2" alt="image">
   <p>Рис. 1 — Главный экран.</p>
 </div> 
 
@@ -59,7 +59,7 @@
 В программе предусмотрено два пользователя — **клиент** и **администратор**.  
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/536e6af2-cb38-40f6-b976-99d67e1969cf" alt="image" width = "70%">
+  <img src="https://github.com/user-attachments/assets/ef908309-6b96-4744-8833-8464f63cbdb6" alt="image" width = "70%">
   <p>Рис. 2 — Окно авторизации.</p>
 </div> 
 
@@ -99,7 +99,7 @@
 ### Главна страница
 Сюда пользователь попадает после нажатия на самую верхнюю кнопку в плавающем меню (три точки). В боковом меню доступны категории товаров. Если нажать «Смотреть всё», на экране будут отображаться все доступные товары в магазине (пример см. ниже).
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/15835cfc-ff7f-4dc2-b57a-21f4242b868d" alt="GIF Image" width="50%">
+  <img src="https://github.com/user-attachments/assets/264c170e-43c9-4d07-9345-10a1ae00c40f" alt="GIF Image" width="60%">
   <p>Рис. 3 — Главная страница после авторизации как пользователь.</p>
 </div>  
 
@@ -116,7 +116,7 @@
 ### Поиск
 После нажатия на кнопку поиска, выходит окно с полем для ввода. 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/7c89fc61-e8c1-4201-9d9c-0ff8372b2638" alt="GIF Image">
+  <img src="https://github.com/user-attachments/assets/32bbf5a4-0913-4f80-8918-7e8f9e909438" alt="GIF Image">
   <p>Рис. 6 — Ожидание поискового запроса.</p>
 </div> 
 
@@ -128,13 +128,13 @@
 
 После выполнения поиска (кнопка «ОК») выполняется ранжирование наиболее релевантных запросов в кэше с помощью алгоритма TF-IDF: он оценивает важность слова в документе относительно всего корпуса текстов, основываясь на частоте термина в документе и его редкости в общем наборе документов. 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/9dce4383-021a-4c45-aa06-518399775e51" alt="GIF Image">
+  <img src="https://github.com/user-attachments/assets/428cd4ec-681f-43cc-8b58-ff43bb3f87d4" alt="GIF Image">
   <p>Рис. 7 — Уведомление о результатах поиска.</p>
 </div> 
 
 Отображение результатов поиска.
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/8378f18a-ebff-4369-8392-98488fb225e4" alt="GIF Image" width = "70%">
+  <img src="https://github.com/user-attachments/assets/7520fb27-11c0-46be-93f3-8fdc271f8653" alt="GIF Image" width = "70%">
   <p>Рис. 8 — Вывод результатов поиска.</p>
 </div> 
 
@@ -148,7 +148,7 @@
 * самая нижняя кнопка выполняет оплату.
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/317d15b8-0966-4068-be3e-a5a4e6fc2923" alt="Image" width="70%">
+  <img src="https://github.com/user-attachments/assets/fe676247-8139-471d-b1b2-38fe24dd84da" alt="Image" width="70%">
   <p>Рис. 9 — Страница корзины.</p>
 </div>  
 
@@ -168,26 +168,26 @@ INSERT INTO public.purchases(id, client_id, instrument_id) VALUES (%1, %2, %3);
 ### Профиль
 Здесь отображается виджет, который можно прокручивать вверх-вниз, который содержит в себе карточки купленных товаров клиентом. Сверху присутствует кнопка «**>**» отвечающая за выход из профиля. 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/9349e67d-05a9-402c-92bf-91156e61b15a" alt="Image" width="70%">
+  <img src="https://github.com/user-attachments/assets/cdc01871-9912-4197-abf4-8136360ff7ce" alt="Image" width="70%">
   <p>Рис. 9 — Страница профиля.</p>
 </div> 
   
 ## Возможности администратора
 По умолчанию эта страница будет пустой до тех пор, пока не будет выбрана таблица для редактирования. Чтобы это сделать, необходимо нажать на выпадающий список в верхней части экрана. Это виджет, в который динамически добавятся все таблицы из базы данных. 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/1e78de30-5cbb-4211-b5ac-7eea98c30982" alt="image" width="50%">
+  <img src="https://github.com/user-attachments/assets/151468e3-21b2-459d-b5a2-821730bcbd10" alt="image">
   <p>Рис. 10 — Страница по умолчанию для администратора.</p>
 </div>
 
 После выбора таблицы её данные отображаются на экране.
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/bb6c4217-072d-4475-a570-e82f7a09605a" alt="image" width="50%">
+  <img src="https://github.com/user-attachments/assets/b52c9173-1fc8-4364-a7ce-5ad27851a102" alt="image">
   <p>Рис. 11 — Выгрузка данных из таблицы.</p>
 </div>
 
 Если плавающее меню администратора перекрывает часть данных, есть возможность его перетаскивать в пределах экрана. Логику реализует сигнал `bool Table::eventFilter(QObject* obj, QEvent* event)`.
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/4a039503-255c-492b-be0c-be83d37ccd1a" alt="image" width="50%">
+  <img src="https://github.com/user-attachments/assets/c3588cb9-2164-4e4d-84d0-08379e7c7fb6" alt="image" width = "90%">
   <p>Рис. 12 — Динамическое изменение позиции плавающего меню.</p>
 </div>
 
@@ -196,7 +196,7 @@ INSERT INTO public.purchases(id, client_id, instrument_id) VALUES (%1, %2, %3);
 
 Здесь нельзя задать значение поля id. Потому что это «счётчик» записей в таблице, который будет сам автоматически увеличиваться по мере поступления новых записей.
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/99fa8964-ae2c-4afa-b854-ef86a75a7506" alt="image">
+  <img src="https://github.com/user-attachments/assets/e5b1e040-6321-4f48-a064-624b74e1e42b" alt="image">
   <p>Рис. 13 — Окно для добавления.</p>
 </div>
 
@@ -205,32 +205,32 @@ INSERT INTO public.purchases(id, client_id, instrument_id) VALUES (%1, %2, %3);
 
 В некоторых таблицах, например, ID начинается необязательно с 1. Итерироваться в этом окне мы можем от самого минимального ID до самого максимального. Чтобы не выходить за пределы.
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/ea9cfb6a-0ab8-4f15-a25f-dcd3543fb627" alt="image">
+  <img src="https://github.com/user-attachments/assets/13fb41f0-bc5a-472f-beae-d8682c75ba66" alt="image">
   <p>Рис. 14 — Окно ввода ID записи (автоинкрементируемого столбца) в текущей таблице.</p>
 </div>
 
 После указания ID удаляемой записи выходит окно подтверждения удаления, где строится таблица с удаляемой строкой (чтобы быть уверенным, что удаляется именно то, что мы задумали).
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/ca9aa27c-eaf9-4f1a-bfbe-325f200deb52" alt="image">
+  <img src="https://github.com/user-attachments/assets/a064e00f-7683-44f0-b339-c5ff516e33bb" alt="image">
   <p>Рис. 15 — Вывод удаляемой строки.</p>
 </div>
 
 После подтверждения происходит удаление из основной таблицы, **а записи, которые ссылались на первичный ключ этой строки, каскадно удаляются**.
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/6a2f0e82-9ee6-45f0-84bb-a17c302c5835" alt="image">
+  <img src="https://github.com/user-attachments/assets/eab41b08-aa73-4321-84cd-9e0ab5554672" alt="image">
   <p>Рис. 16 — Окно подтверждения удаления.</p>
 </div>
 
 ## Редактирование записи
 Для редактирования указывается всегда номер строки в таблицы, а не ID записи. 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/0bd0d248-54ce-4bb0-b2e4-b166a7e5fbe3" alt="image">
+  <img src="https://github.com/user-attachments/assets/cf19ce16-4730-4af4-8439-12149999dc8f" alt="image">
   <p>Рис. 17 — Окно поиска записи в таблице.</p>
 </div>
 
 Здесь редактирование порядкового номера записи (id) также недоступно.
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/04cba3de-bf20-44a3-8ab7-13dac0666ff6" alt="image">
+  <img src="https://github.com/user-attachments/assets/6422c3fd-3363-4ac4-833b-e0680b535321" alt="image">
   <p>Рис. 18 — Окно редактирования записи.</p>
 </div>
 
