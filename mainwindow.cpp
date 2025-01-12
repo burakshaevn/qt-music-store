@@ -107,8 +107,9 @@ void MainWindow::on_pushButton_logout_clicked() {
     }
 
     if (user_  && user_->GetRole() == Role::User) {
-        side_widget_.reset();
-        floating_menu_.reset(); 
+        // side_widget_.reset();
+        // floating_menu_.reset();
+        floating_widgets_.reset();
 
         instruments_.reset();
         cart_.reset();
@@ -139,148 +140,64 @@ void MainWindow::on_pushButton_logout_clicked() {
 }
 
 void MainWindow::SetupFloatingMenu() {
-    floating_menu_ = std::make_unique<QWidget>(this);
-    floating_menu_->setStyleSheet("background-color: #fafafa; border-radius: 29px;");
-    floating_menu_->setFixedSize(74, 349);
+    floating_widgets_->BuildFloatingMenu(
+        // Обработка кнопки "More"
+        [this]() { this->MoreClicked(); },
 
-    QVBoxLayout* menuLayout = new QVBoxLayout(floating_menu_.get());
-    menuLayout->setContentsMargins(10, 20, 10, 20);
-    menuLayout->setSpacing(20);
+        // Обработка кнопки "Search"
+        [this]() {
+            bool ok;
+            QString term = QInputDialog::getText(
+                this,
+                "Поиск",
+                "Укажите название инструмента:",
+                QLineEdit::Normal,
+                "",
+                &ok
+                );
 
-    QPushButton* more_ = new QPushButton(floating_menu_.get());
-    more_->setIcon(QIcon(":/more_horiz.svg"));
-    more_->setIconSize(QSize(35, 35));
-    more_->setStyleSheet("border: none; outline: none;");
-    connect(more_, &QPushButton::clicked, this, &MainWindow::MoreClicked);
-
-    QPushButton* searchButton = new QPushButton(floating_menu_.get());
-    searchButton->setIcon(QIcon(":/search.svg"));
-    searchButton->setIconSize(QSize(35, 35));
-    searchButton->setStyleSheet("border: none; outline: none;");
-    connect(searchButton, &QPushButton::clicked, this, [this]() {
-        bool ok;
-
-        // Создаём QInputDialog
-        QInputDialog inputDialog(this);
-        inputDialog.setWindowTitle("Поиск");
-        inputDialog.setLabelText("Укажите название инструмента:");
-        inputDialog.setInputMode(QInputDialog::TextInput); // Ввод текста
-        inputDialog.setTextValue(""); // Стартовое значение
-
-        // Устанавливаем минимальные и максимальные размеры
-        inputDialog.setMinimumSize(300, 150); // Минимальные размеры
-        inputDialog.setMaximumSize(600, 400); // Разумные ограничения максимума
-
-        // Центрируем диалог
-        inputDialog.setGeometry(QStyle::alignedRect(
-            Qt::LeftToRight,                      // Направление текста/интерфейса
-            Qt::AlignCenter,                      // Центрирование
-            inputDialog.size(),                   // Размер диалога
-            qApp->primaryScreen()->availableGeometry() // Доступная геометрия экрана
-            ));
-
-        // Если пользователь нажал OK
-        if (inputDialog.exec() == QDialog::Accepted) {
-            QString term = inputDialog.textValue();
-
-            // Проверяем успешность ввода
-            if (!term.isEmpty()) {
+            if (ok && !term.isEmpty()) {
                 InstrumentInfo instrument_;
                 instrument_.name_ = term;
 
-                // Выполняем поиск инструмента
                 int relevant_results = product_card_->DrawRelevantInstruments(ui->scrollArea, instrument_.name_);
-                if (relevant_results > 0){
+                if (relevant_results > 0) {
                     QMessageBox::information(this, "", "Найдено " + QString::number(relevant_results) + " результатов по запросу «" + term + "».");
                     MoreClicked();
-                }
-                else{
+                } else {
                     QMessageBox::warning(this, "Результаты поиска", "Отсутствуют релевантные результаты.");
                 }
-            }
-            else {
+            } else {
                 QMessageBox::warning(
                     this,
                     "Предупреждение",
                     "Название инструмента не может быть пустым."
-                );
+                    );
             }
-        }
-    });
+        },
 
-    QPushButton* cart = new QPushButton(floating_menu_.get());
-    cart->setIcon(QIcon(":/Shopping cart.svg"));
-    cart->setIconSize(QSize(32, 32));
-    cart->setStyleSheet("border: none; outline: none;");
-    connect(cart, &QPushButton::clicked, this, &MainWindow::CartClicked);
+        // Обработка кнопки "Cart"
+        [this]() { this->CartClicked(); },
 
-    QPushButton* userButton = new QPushButton(floating_menu_.get());
-    userButton->setIcon(QIcon(":/person.svg"));
-    userButton->setIconSize(QSize(35, 35));
-    userButton->setStyleSheet("border: none; outline: none;");
-    connect(userButton, &QPushButton::clicked, this, &MainWindow::ProfileClicked);
+        // Обработка кнопки "User Profile"
+        [this]() { this->ProfileClicked(); }
+        );
 
-    menuLayout->addWidget(more_);
-    menuLayout->addWidget(searchButton);
-    menuLayout->addWidget(cart);
-    menuLayout->addWidget(userButton);
-
-    floating_menu_->move(970, 105);
-    floating_menu_->show();
 }
 
 void MainWindow::SetupSideMenu() {
-    // Создаём боковое меню как QWidget
-    side_widget_ = std::make_unique<QWidget>(this);
-    side_widget_->setStyleSheet("background-color: #fafafa;");
-
-    side_widget_->setGeometry(0, 0, 224, 560);
-
-    // QLabel* logo = new QLabel(side_widget_.get());
-    // logo->setPixmap(QPixmap("://logo.svg").scaled(18, 18, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-    // logo->setGeometry(19, 38, 18, 18);
-
-    // QLabel* logo_words = new QLabel(side_widget_.get());
-    // logo_words->setPixmap(QPixmap("://mercedez-benz.svg").scaled(160, 18, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-    // logo_words->setGeometry(45, 38, 160, 18);
-
-    // заголовок
-    QLabel* title = new QLabel("Каталог", side_widget_.get());
-    title->setStyleSheet("background-color: #fafafa; color: #140f10; font: 700 14pt 'Open Sans';");
-    title->setGeometry(28, 87, 172, 19);
-
-    // Создаём QListWidget
-    side_list_ = new QListWidget(side_widget_.get());
-    side_list_->setStyleSheet("background-color: #fafafa; color: #140f10; font: 12pt 'Open Sans'; border: 0px;");
-    side_list_->setGeometry(22, 111, 224, 449);
-    side_list_->setSpacing(3);
-
-    // Наполняем список моделей
-    QSqlQuery query("SELECT name FROM instrument_types");
-    while (query.next()) {
-        QString carTypeName = query.value("name").toString();
-        side_list_->addItem(carTypeName);
-    }
-
-    // Добавляем кнопку "Смотреть все" как элемент списка
-    QListWidgetItem* viewAllItem = new QListWidgetItem("Смотреть всё", side_list_);
-    viewAllItem->setTextAlignment(Qt::AlignLeft); // Выравнивание текста по центру
-    viewAllItem->setFont(QFont("Open Sans", 12));
-    viewAllItem->setForeground(QColor("#9b9c9c"));
-
-    // Обработка кликов по элементам меню
-    connect(side_list_, &QListWidget::itemClicked, this, [this](QListWidgetItem* item) {
-        if (item->text() == "Смотреть всё") {
+    floating_widgets_->BuildSideMenu(
+        // Лямбда для обработки кликов по элементам списка
+        [this](const QString& itemText) {
+            product_card_->UpdateInstrumentsWidget(ui->scrollArea, itemText);
+            ui->stackedWidget->setCurrentWidget(ui->main);
+        },
+        // Лямбда для обработки клика по "Смотреть всё"
+        [this]() {
             product_card_->UpdateInstrumentsWidget(ui->scrollArea, "Смотреть всё");
+            ui->stackedWidget->setCurrentWidget(ui->main);
         }
-        else {
-            // Логика для остальных пунктов списка
-            product_card_->UpdateInstrumentsWidget(ui->scrollArea, item->text());
-        }
-        ui->stackedWidget->setCurrentWidget(ui->main);
-    });
-
-    side_widget_->show();
+        );
 }
 
 QList<QString> MainWindow::GetPurchasedInstruments(int user_id) const {
@@ -305,10 +222,24 @@ void MainWindow::BuildDependencies() {
         db_manager_ = std::make_shared<DatabaseHandler>();
         db_manager_->LoadDefault();
     }
+
+    if (floating_widgets_){
+        SetupFloatingMenu();
+        SetupSideMenu();
+    }
+    else {
+        floating_widgets_ = std::make_unique<FloatingWidgets>(db_manager_, this);
+        SetupFloatingMenu();
+        SetupSideMenu();
+    }
+
     if (!product_card_ && !cart_ && !instruments_) {
         product_card_ = std::make_shared<ProductCard>(db_manager_, nullptr, this);
         cart_ = std::make_shared<Cart>(product_card_, this);
         instruments_ = std::make_shared<Instruments>(product_card_, cart_, db_manager_);
+        connect(instruments_.get(), &Instruments::CartUpdated, this, [this]{
+            ui->label_cart_total->setText("Корзина — " + FormatPrice(cart_->GetTotalCost()) + " руб.");
+        });
 
         // Устанавливаем связь между ProductCard и Instruments
         product_card_->SetInstrumentsPtr(instruments_);
@@ -322,10 +253,10 @@ void MainWindow::MoreClicked()
             product_card_->RestoreHiddenToCartButtons();
         }
         if (user_->GetRole() == Role::User) {
-            side_widget_->setVisible(true);
-            side_list_->setVisible(true);
+            floating_widgets_->GetSideMenu()->setVisible(true);
+            floating_widgets_->GetSideList()->setVisible(true);
 
-            floating_menu_->move(970, 105);
+            floating_widgets_->GetFloatingMenu()->move(970, 105);
             ui->stackedWidget->setCurrentWidget(ui->main);
             return;
         }
@@ -335,8 +266,8 @@ void MainWindow::MoreClicked()
 
 void MainWindow::ProfileClicked() {
     if (user_->GetRole() == Role::User) {
-        side_widget_->setVisible(false);
-        side_list_->setVisible(false);
+        floating_widgets_->GetSideMenu()->setVisible(false);
+        floating_widgets_->GetSideList()->setVisible(false);
 
         product_card_->HideOldCards();
         product_card_->EnsureContainerInScrollArea(ui->scrollArea_2);
@@ -353,7 +284,7 @@ void MainWindow::ProfileClicked() {
         product_card_->card_container_PerformAdjustSize();
 
         ui->label_clientname->setText(user_->GetName() + " — профиль");
-        floating_menu_->move(970, 125);
+        floating_widgets_->GetFloatingMenu()->move(970, 125);
         ui->stackedWidget->setCurrentWidget(ui->user_page);
     }
 }
@@ -364,8 +295,8 @@ void MainWindow::CartClicked(){
             product_card_->RestoreHiddenToCartButtons();
         }
         if (user_->GetRole() == Role::User) {
-            side_widget_->setVisible(false);
-            side_list_->setVisible(false);
+            floating_widgets_->GetSideMenu()->setVisible(false);
+            floating_widgets_->GetSideList()->setVisible(false);
 
             if (cart_->CartIsEmpty()){
                 ui->label_cart_total->setText("Корзина");
@@ -385,7 +316,7 @@ void MainWindow::CartClicked(){
                 product_card_->card_container_PerformAdjustSize();
             }
 
-            floating_menu_->move(970, 105);
+            floating_widgets_->GetFloatingMenu()->move(970, 105);
             ui->stackedWidget->setCurrentWidget(ui->cart);
             return;
         }
@@ -439,7 +370,6 @@ void MainWindow::ToPayCart()
         }
         else {
             // All succsess
-            cart_->ClearCart(); // Очищаем корзину после успешной транзакции
         }
     }
     else {

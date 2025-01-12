@@ -16,6 +16,7 @@
 
 #include "database_handler.h"
 #include "product_card.h"
+#include "floating_widgets.h"
 #include "cart.h"
 #include "user.h"
 #include "table.h"
@@ -66,12 +67,11 @@ private:
 
     std::unique_ptr<User> user_;
     std::unique_ptr<Table> table_;
-    std::unique_ptr<QWidget> floating_menu_; // Плавающее меню
 
-    // Боковое меню
-    std::unique_ptr<QWidget> side_widget_;
-    QListWidget* side_list_;
+    // Управляет плавающими виджетами: левым боковым меню каталога и правым плавающим меню
+    std::unique_ptr<FloatingWidgets> floating_widgets_;
 
+    // Инициализировать зависимости
     void BuildDependencies();
 
     // Обработка нажатий на кнопки "Ещё", "Профиль" и "Корзина" из плавающего меню
@@ -79,7 +79,7 @@ private:
     void ProfileClicked();
     void CartClicked();
 
-    // Функция очистки корзины
+    // Функции обработки кнопок оплаты/очистки корзины
     void CleanCart();
     void ToPayCart();
 

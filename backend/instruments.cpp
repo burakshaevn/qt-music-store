@@ -165,6 +165,7 @@ void Instruments::PullInstruments() {
                         cart_->DeleteFromCart(instrument_info.name_);
                         cart_->MinusToTotalCost(instrument_info.price_);
                     }
+                    emit CartUpdated(cart_->GetTotalCost());
                 });
                 to_cart_->move(589, 13);
 

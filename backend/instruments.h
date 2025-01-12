@@ -48,6 +48,7 @@ struct InstrumentsHasher {
 
 class Instruments : public QObject
 {
+    Q_OBJECT
 public:
     using Container = std::unordered_map<QString, InstrumentInfo, InstrumentsHasher>;
 
@@ -68,6 +69,10 @@ public:
     // Кэширование инструментов из базы данных.
     // Загружаем данные об инструментах в instruments_ как в основное хранилище
     void PullInstruments();
+
+signals:
+    // Сигнал, который отправляет общую стоимость корзины
+    void CartUpdated(double totalCost);
 
 private:
     Container instruments_; // <Instrument Name, InstrumentInfo>

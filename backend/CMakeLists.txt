@@ -22,6 +22,7 @@ add_library(backend
   instruments.h instruments.cpp
   product_card.h product_card.cpp
   cart.h cart.cpp
+  floating_widgets.h floating_widgets.cpp
 
 )
 target_link_libraries(backend Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Sql)
