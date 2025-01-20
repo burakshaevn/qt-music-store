@@ -1,9 +1,10 @@
 #include "edit_dialog.h"
 
-EditDialog::EditDialog(const QSqlRecord& record, QWidget* parent)
+EditDialog::EditDialog(const QSqlRecord& record, const QString& title, QWidget* parent)
     : QDialog(parent)
     , record_(record)
 {
+    setWindowTitle(title);
     // Основной макет
     auto* layout = new QVBoxLayout(this);
 

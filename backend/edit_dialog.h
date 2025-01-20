@@ -19,7 +19,7 @@ class EditDialog : public QDialog {
     Q_OBJECT
 
 public:
-    explicit EditDialog(const QSqlRecord& record, QWidget* parent = nullptr);
+    explicit EditDialog(const QSqlRecord& record, const QString& title, QWidget* parent = nullptr);
 
     QSqlRecord GetUpdatedRecord() const;
 

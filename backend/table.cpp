@@ -140,14 +140,6 @@ void Table::LoadTable() {
             return;
         }
 
-        if (!query.next()) {
-            QMessageBox::warning(this, "Предупреждение", "Выбранная таблица пуста или не существует.");
-            return;
-        }
-
-        // Возврат к началу результата
-        query.first();
-
         // Обновление описания таблицы
         description_table->clear();
         description_table->setText(db_manager_->GetTableDescription(table_name));
@@ -170,16 +162,18 @@ void Table::LoadTable() {
         }
         model->setHorizontalHeaderLabels(headers);
 
-        // Заполнение модели данными из запроса
-        do {
-            QList<QStandardItem*> items;
-            for (int col = 0; col < column_count; ++col) {
-                auto* item = new QStandardItem(query.value(col).toString());
-                item->setEditable(false);
-                items.append(item);
+        // Заполнение модели данными из запроса (если они есть)
+        if (query.isSelect() && query.isActive()) {
+            while (query.next()) {
+                QList<QStandardItem*> items;
+                for (int col = 0; col < column_count; ++col) {
+                    auto* item = new QStandardItem(query.value(col).toString());
+                    item->setEditable(false);
+                    items.append(item);
+                }
+                model->appendRow(items);
             }
-            model->appendRow(items);
-        } while (query.next());
+        }
 
         // Установка модели
         data_table_->setModel(model);
@@ -190,8 +184,6 @@ void Table::LoadTable() {
         QHeaderView* header = data_table_->horizontalHeader();
         header->setSectionResizeMode(QHeaderView::Stretch);
 
-        // Сохранение текущей таблицы
-        current_table_ = StringToTables(table_name);
     } else {
         QMessageBox::critical(this, "Ошибка в базе данных", "Ошибка при выполнении запроса.");
     }
@@ -232,7 +224,7 @@ void Table::AddRecord() {
 
     try{
         // Открываем диалог EditDialog для ввода данных
-        EditDialog dialog(newRecord, this);
+        EditDialog dialog(newRecord, "Добавление записи", this);
         if (dialog.exec() == QDialog::Accepted) {
             QSqlRecord updatedRecord;
             updatedRecord = dialog.GetUpdatedRecord();
@@ -389,24 +381,58 @@ void Table::EditRecord() {
         return;
     }
 
+    QString table_name = table_selector_->currentText();
+    QString col_name = "id";
+
+    // Запрашиваем ID для редактирования
+    int min_id = db_manager_->GetMaxOrMinValueFromTable("MIN", col_name, table_name);
+    int max_id = db_manager_->GetMaxOrMinValueFromTable("MAX", col_name, table_name);
+
     bool ok;
-    int row = QInputDialog::getInt(
-        this, "Редактирование записи", "Укажите порядковый номер строки в таблице:", 1, 1, data_table_->model()->rowCount(), 1, &ok
+    int id = QInputDialog::getInt(
+        this, tr("Редактирование записи"), tr("Укажите порядковый номер записи (столбец ID):"), 1, min_id, max_id, 1, &ok
         );
 
     if (!ok) {
         return;
     }
 
-    row -= 1;
+    if (id < min_id || id > max_id) {
+        QMessageBox::warning(this, "Некорректный ввод", "Укажите корректный ID.");
+        return;
+    }
 
-    if (row < 0 || row >= data_table_->model()->rowCount()) {
-        QMessageBox::warning(this, "Invalid Data", "The entered data number is invalid.");
+    // Поиск индекса столбца "id"
+    QAbstractItemModel* model = data_table_->model();
+    int id_col_index = -1;
+    for (int col = 0; col < model->columnCount(); ++col) {
+        if (model->headerData(col, Qt::Horizontal).toString().toLower() == col_name.toLower()) {
+            id_col_index = col;
+            break;
+        }
+    }
+
+    if (id_col_index == -1) {
+        QMessageBox::warning(this, "Сообщение", "Столбец 'id' не найден в таблице.");
+        return;
+    }
+
+    // Поиск строки по ID
+    int row = -1;
+    for (int i = 0; i < model->rowCount(); ++i) {
+        QModelIndex index = model->index(i, id_col_index);
+        if (index.data().toInt() == id) {
+            row = i;
+            break;
+        }
+    }
+
+    if (row == -1) {
+        QMessageBox::warning(this, "Not Found", "Record with the specified ID was not found.");
         return;
     }
 
     // Получаем данные текущей строки через модель
-    QAbstractItemModel* model = data_table_->model();
     QSqlRecord record;
     for (int col = 0; col < model->columnCount(); ++col) {
         QVariant value = model->index(row, col).data();
@@ -414,9 +440,9 @@ void Table::EditRecord() {
         record.setValue(col, value);
     }
 
-    try{
+    try {
         // Открываем диалог для редактирования
-        EditDialog dialog(record, this);
+        EditDialog dialog(record, "Редактирование записи", this);
         if (dialog.exec() == QDialog::Accepted) {
             // Получаем обновлённую запись
             QSqlRecord updatedRecord = dialog.GetUpdatedRecord();
@@ -424,25 +450,21 @@ void Table::EditRecord() {
             // Формируем SQL-запрос для обновления строки
             QString tableName = table_selector_->currentText();
             QStringList setClauses;
-            QString whereClause;
 
             // Формирование SET (новые значения)
             for (int col = 0; col < updatedRecord.count(); ++col) {
                 QString fieldName = updatedRecord.fieldName(col);
                 QString newValue = updatedRecord.value(col).toString();
-                setClauses.append(QString("%1 = '%2'").arg(fieldName, newValue));
-            }
 
-            // Формирование WHERE (по всем данным строки)
-            for (int col = 0; col < record.count(); ++col) {
-                QString fieldName = record.fieldName(col);
-                QString oldValue = record.value(col).toString();
-
-                if (!whereClause.isEmpty()) {
-                    whereClause += " AND ";
+                // Пропускаем поле id, так как его нельзя обновлять
+                if (fieldName != "id") {
+                    setClauses.append(QString("%1 = '%2'").arg(fieldName, newValue));
                 }
-                whereClause += QString("%1 = '%2'").arg(fieldName, oldValue);
             }
+
+            // Формирование WHERE (только по id)
+            QString idValue = record.value("id").toString();
+            QString whereClause = QString("id = '%1'").arg(idValue);
 
             if (whereClause.isEmpty()) {
                 throw std::runtime_error("Cannot determine the row for update.");
@@ -461,7 +483,7 @@ void Table::EditRecord() {
             QMessageBox::information(this, "Success", "Record updated successfully.");
         }
     }
-    catch(const std::exception& e) {
+    catch (const std::exception& e) {
         QMessageBox::critical(this, "Error", e.what());
     }
 }
