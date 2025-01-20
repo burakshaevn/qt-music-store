@@ -198,7 +198,7 @@ INSERT INTO public.purchases(id, client_id, instrument_id) VALUES (%1, %2, %3);
 
 Здесь нельзя задать значение поля id. Потому что это «счётчик» записей в таблице, который будет сам автоматически увеличиваться по мере поступления новых записей.
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/e5b1e040-6321-4f48-a064-624b74e1e42b" alt="image">
+  <img src="https://github.com/user-attachments/assets/c1fffbe4-9caa-4003-9a6c-c7f1f1a8caa4" alt="image">
   <p>Рис. 13 — Окно для добавления.</p>
 </div>
 
@@ -224,15 +224,15 @@ INSERT INTO public.purchases(id, client_id, instrument_id) VALUES (%1, %2, %3);
 </div>
 
 ## Редактирование записи
-Для редактирования указывается всегда номер строки в таблицы, а не ID записи. 
+Для редактирования указывается всегда номер ID записи. 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/cf19ce16-4730-4af4-8439-12149999dc8f" alt="image">
+  <img src="https://github.com/user-attachments/assets/6c7badbb-65d8-4c66-ac0b-4cf8227f1dad" alt="image">
   <p>Рис. 17 — Окно поиска записи в таблице.</p>
 </div>
 
 Здесь редактирование порядкового номера записи (id) также недоступно.
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/6422c3fd-3363-4ac4-833b-e0680b535321" alt="image">
+  <img src="https://github.com/user-attachments/assets/08049e44-f6d0-41ef-8960-ad6eca2fc2c0" alt="image">
   <p>Рис. 18 — Окно редактирования записи.</p>
 </div>
 
