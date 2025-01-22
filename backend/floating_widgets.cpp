@@ -75,15 +75,15 @@ void FloatingWidgets::BuildSideMenu(
     const std::function<void()>& onViewAllClicked
     ) {
     // side_menu_ = std::make_unique<QWidget>(this);
-    side_menu_->setStyleSheet("background-color: #fafafa;");
+    side_menu_->setStyleSheet("background-color: #ffffff;");
     side_menu_->setGeometry(0, 0, 224, 560);
 
     QLabel* title = new QLabel("Каталог", side_menu_.get());
-    title->setStyleSheet("background-color: #fafafa; color: #140f10; font: 700 14pt 'Open Sans';");
+    title->setStyleSheet("background-color: #ffffff; color: #140f10; font: 700 14pt 'Open Sans';");
     title->setGeometry(28, 87, 172, 19);
 
     side_list_ = new QListWidget(side_menu_.get());
-    side_list_->setStyleSheet("background-color: #fafafa; color: #140f10; font: 12pt 'Open Sans'; border: 0px;");
+    side_list_->setStyleSheet("background-color: #ffffff; color: #140f10; font: 12pt 'Open Sans'; border: 0px;");
     side_list_->setGeometry(22, 111, 224, 449);
     side_list_->setSpacing(3);
 
