@@ -53,7 +53,7 @@
 
 ## Пример  
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/669a54cc-4896-43c4-9182-e254491da1b2" alt="image">
+  <img src="https://github.com/user-attachments/assets/b66d9744-429c-4511-bccb-95be1451441b" alt="image">
   <p>Рис. 1 — Главный экран.</p>
 </div> 
 
@@ -101,7 +101,7 @@
 ### Главна страница
 Сюда пользователь попадает после нажатия на самую верхнюю кнопку в плавающем меню (три точки). В боковом меню доступны категории товаров. Если нажать «Смотреть всё», на экране будут отображаться все доступные товары в магазине (пример см. ниже).
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/264c170e-43c9-4d07-9345-10a1ae00c40f" alt="GIF Image" width="60%">
+  <img src="https://github.com/user-attachments/assets/8038d9b1-31f1-4197-80ec-287ce8ab93da" alt="GIF Image" width="60%">
   <p>Рис. 3 — Главная страница после авторизации как пользователь.</p>
 </div>  
 
@@ -115,7 +115,8 @@
   <p>Рис. 5 — Товар добавлен в корзину.</p>
 </div>   
 
-### Поиск
+### Поиск 
+
 После нажатия на кнопку поиска, выходит окно с полем для ввода. 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/32bbf5a4-0913-4f80-8918-7e8f9e909438" alt="GIF Image">
@@ -136,7 +137,7 @@
 
 Отображение результатов поиска.
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/7520fb27-11c0-46be-93f3-8fdc271f8653" alt="GIF Image" width = "70%">
+  <img src="https://github.com/user-attachments/assets/bf533c80-1658-49f0-9b54-732e39e4365b" alt="GIF Image" width = "70%">
   <p>Рис. 8 — Вывод результатов поиска.</p>
 </div> 
 
