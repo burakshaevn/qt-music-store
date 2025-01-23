@@ -108,7 +108,7 @@ void Instruments::PullInstruments() {
                     }
                     break;
                 }
-                case 3: case 4: case 5: case 6: case 7: {
+                default:
                     QPixmap originalPixmap(instrument_info.image_path_);
                     if (!originalPixmap.isNull()) {
                         QPixmap scaledPixmap = originalPixmap.scaled(145, 113, Qt::KeepAspectRatio, Qt::SmoothTransformation);
@@ -117,10 +117,6 @@ void Instruments::PullInstruments() {
                         instrument_image->setFixedSize(145, 113);
                         instrument_image->move(62, (card->height() - instrument_image->height()) / 2);
                     }
-                    break;
-                }
-
-                default:
                     break;
                 }
 
